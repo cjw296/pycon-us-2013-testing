@@ -1,0 +1,211 @@
+.. title: Things to make writing tests easier
+
+:data-transition-duration: 150
+:css: presentation.css
+
+-------------
+
+:id: title
+:class: slide
+
+Things to make writing tests easier
+===================================
+
+Chris Withers
+
+----
+
+:class: slide
+
+Something to test
+=================
+
+.. class:: block-quote sp100
+
+  "Here's some data in a CSV..."
+
+.. table::
+    :class: my-table-class
+
+    +------------+------------+
+    | Name       | Money Owed |
+    +============+============+
+    | Adam Alpha | 100        |
+    +------------+------------+
+    | Brian Beta | 300        | 
+    +------------+------------+
+    | Cédric Cee | 200        |
+    +------------+------------+
+
+.. class:: block-quote right
+
+  "...parse it and tell me who owes the most money!"
+
+--------
+
+.. include:: code/sample1.py
+  :code: python
+
+.. include:: code/tests/test_sample1.py
+  :code: python
+
+.. note:: here's the spec for the function
+
+--------
+
+.. include:: code/sample2.py
+  :code: python
+
+.. note:: 
+
+  test round one, we DON'T use csv writer:
+
+  - too symetrical
+  - doesn't let us test malformed csv
+  - what about line endings? bytes vs strings?
+
+  Test doesn't work on Windows (re-open tempfile!)
+
+--------
+
+.. container:: box w600
+
+  This is just some text in a slide.
+
+  Here's another paragraph on a slide
+
+  - bullet
+  - list
+
+.. note:: 
+
+  Just using NamedTemporaryFile leaves you with:
+
+  ValueError: I/O operation on closed file.
+
+-------------------
+
+      # unicode in 'name' column
+      # invalid ints
+      # negative numbers?
+
+what if they're all zero?
+
+
+Hello 2
+
+--------
+
+
+.. code:: python
+
+  def top_vol(path):
+      # read csv
+      # log how long it took
+      # timeout from url?
+      # return most expensive / highest volume
+      # unicode in 'name' column
+      # invalid ints
+      # negative numbers?
+      pass
+
+
+----------------------
+
+.. code:: python
+
+  def top_earner(path):
+      # read csv
+      # log how long it took
+      # timeout from url?
+      # return most expensive / highest volume
+      # unicode in 'name' column
+      # invalid ints
+      # negative numbers?
+      pass
+
+----------------
+ 
+Overview
+
+compare
+- prefix to compare!
+- put expected first: looks weird but makes sense    
+- sets
+- dicts
+- lists and tuples
+- generators (generator helper)
+- long strings
+- string comparison objects
+- registering your own
+- comparison objects
+
+output capture
+
+testing exceptions
+- ShouldRaise
+- what's in stdlib now?
+
+with self.assertRaises(SomeException) as cm:
+    do_something()
+
+the_exception = cm.exception
+self.assertEqual(the_exception.error_code, 3)
+
+files and directories
+- computing paths
+- writing files (encoding)
+- reading files (encoding)
+- listing directories
+
+logging
+seperates log entry generation from log entry recording
+- inspecting for tracebacks (diff between error, exception and exc_info=true_
+- filtering by level
+- filtering by logger
+- checking handler configuration
+
+mocking
+- replacers
+- replace where used, contrast with Mock (ie: same)
+- things that may not be there
+- dict keys
+- elements in lists
+- removing things (dict values (eg: env), attributes)
+
+the call pattern mock
+- mock out a set of methods
+- check they're called in order with expected params
+- side effects
+- changes is API
+
+dates and times
+- mocks
+- non - monotonic
+- set values / add values
+- set delta / delta type
+- now / utcnow
+
+manuel
+- different parsers
+- testfixtures plugin
+- testing documentation
+
+modes of operation (TempDirectory, Replacers, LogCapture)
+- decorator
+- context manager
+- manual
+ 
+----------
+
+Summary
+=======
+
+testfixtures
+  http://www.blah.com
+
+mock
+  http://www.blah.com
+
+manuel
+  http://www.blah.com
