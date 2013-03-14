@@ -68,12 +68,13 @@ div.step {
     width: auto;
 }
 
-.step h1 {
+.step h1, .header {
     margin-bottom: 20px; 
     font-size: 50px;
     font-weight: bold;
     color: #628CCD;
     text-align: center;
+    white-space: nowrap;
 }
 
 .step h2 {
@@ -90,7 +91,7 @@ div.step {
 
 .step table {
     border: 1px solid black;
-    margin: 0 auto;
+    margin: 0 auto 50px auto;
 }
 
 .step a {
@@ -137,6 +138,10 @@ div pre.code, div .box {
     font-size: 20px;
 }
 
+div p.box, div.box p, div.slide p {
+    font-size: 35px;
+}
+
 div.code {
     white-space: pre;
     font-family: monospace;
@@ -175,6 +180,7 @@ div.step .right { text-align: right;}
 div.step .sp100 {margin-top: 100px;}
 div.step .sp200 {margin-top: 200px;}
 div.step .sp300 {margin-top: 300px;}
+div.step .mg20 {margin-top: 40px; margin-bottom: 40px;}
 
 /* classes */
 p.block-quote {
@@ -229,11 +235,81 @@ div#sample3 {
     left: 260px;
 }
 
-div#sample3 pre.code {
+div#sample4 {
+    position: relative;
+    left: 260px;
+}
+
+div#sample3 pre.code, div#sample4 pre.code {
     font-size: 15px;
 }
 
-#test-highlight {
-    width: 600px;
-    height: 200px;
+div#test5 pre.code {
+    position: relative;
+    top: 600px;
+}
+
+div#test6 pre.code{
+    position: relative;
+    top: 400px;
+}
+
+div#log1 pre.code {
+    position: relative;
+    top: -30px;
+}
+
+div#log2 pre.code {
+    position: relative;
+    top: 230px;
+}
+
+div#highlight-1 {
+    position: relative;
+    top: -29px;
+    width: 800px;
+    height: 213px;
+}
+
+div#highlight-2 {
+    position: relative;
+    top: 220px;
+    width: 811px;
+    height: 31px;
+}
+
+div#highlight-3 {
+    position: relative;
+    top: 71px;
+    width: 800px;
+    height: 92px;
+}
+
+div#highlight-4 {
+    position: relative;
+    bottom: -96px;
+    width: 800px;
+    height: 190px;
+}
+
+
+div#highlight-5 {
+    position: relative;
+    bottom: -154px;
+    width: 800px;
+    height: 28px;
+}
+
+
+div#highlight-6 {
+    position: relative;
+    top: 219px;
+    width: 800px;
+    height: 190px;
+}
+
+
+div#comparisons {
+    position: relative;
+    top: 350px;
 }

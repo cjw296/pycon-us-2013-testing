@@ -1,10 +1,19 @@
-import tempfile
 from code.sample4 import most_owed
 
+import logging
+import tempfile
 from unittest import TestCase
 
 class Tests(TestCase):
 
+    def setUp(self):
+        self.logger = logging.getLogger()
+        self.original = self.logger.level
+        self.logger.setLevel(1000)
+
+    def tearDown(self):
+        self.logger.setLevel(self.original)
+        
     def test_parse(self):
         with tempfile.NamedTemporaryFile() as source:
             source.write(b'''\

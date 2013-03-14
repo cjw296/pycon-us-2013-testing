@@ -57,7 +57,6 @@ Something to test
 :id: test1
 :data-x: r0
 :data-y: r0
-:data-transition-duration: 0
 
 .. include:: code/tests/test_sample1.py
   :code: python
@@ -69,11 +68,16 @@ Something to test
 :id: test2
 :data-x: r1600
 :data-y: r0
-:data-transition-duration: 0
 
 .. include:: code/tests/test_sample2.py
   :code: python
   :start-line: 1
+
+.. note:: test round one, we DON'T use csv writer:
+
+  - too symmetrical
+  - doesn't let us test malformed csv
+  - what about line endings? bytes vs strings?
 
 --------
 
@@ -88,7 +92,7 @@ Something to test
 .. note:: 
 
   obvious problem!
-  ...so lets round outwith some more tests
+  ...so lets round out with some more tests
 
 --------
 
@@ -112,6 +116,10 @@ Something to test
   :start-line: 26
   :end-line: 35
 
+.. note::
+
+  Test doesn't work on Windows (re-open tempfile!)
+
 --------
 
 :class: pop
@@ -123,14 +131,6 @@ Something to test
   :start-line: 35
 
 .. note:: 
-
-  test round one, we DON'T use csv writer:
-
-  - too symetrical
-  - doesn't let us test malformed csv
-  - what about line endings? bytes vs strings?
-
-  Test doesn't work on Windows (re-open tempfile!)
 
   what if we had to process a dir of files to get the answer?
 
@@ -155,215 +155,1507 @@ Something to test
 --------
 
 :class: pop
-:data-x: r2000
-:data-y: r-150
+:data-x: r1900
+:data-y: r-300
 :data-z: 0
 
 .. include:: code/tests/test_sample4.py
   :code: python
-  :start-line: 16
-  :end-line: 25
+  :start-line: 46
+  :end-line: 56
 
 --------
 
-:data-x: r1600
-:data-y: r0
-:data-z: r0
+:class: pop
+:data-x: r0
+:data-y: r350
 
-.. include:: code/sample3.py
+.. include:: code/tests/test_sample4.py
+  :code: python
+  :start-line: 56
+
+--------
+
+:id: sample4
+:data-x: r400
+:data-y: r-150
+:data-z: 650
+
+.. include:: code/sample4.py
   :code: python
 
 .. note::
 
-   here's the code
+  what's still untested?
 
-   still bugs:
-
-   - what if we one saw zeros or negative numbers
-   - what about whitespace in headers?
-   - line coverage is only a start!
+  - logging
+  - what do the exceptions look like?
 
 --------
 
-Have we tested the logging?
+:data-x: r1800
+:data-y: r0
+:data-z: 0
 
-What do the exceptions look like?
+.. container:: box
 
-----------------------
+  .. class:: header
 
-  copy and paste -> abstract -> tools
+    running the tests is now messy...
+
+  ::
+
+    $ bin/python -m unittest discover
+    ignoring 'X' as not valid
+    ......
+    -----------------------------------------------------
+    Ran 6 tests in 0.006s
+
+    OK
+
+
+--------
+
+:id: test5
+:data-x: r2000
+:data-y: r0
+
+.. include:: code/tests/test_sample5.py
+  :code: python
+  :start-line: 1
+
+
+.. note:: 
+
+   copy and paste -> abstract -> tools
 
   ...but then need to test those
 
-------------------
+--------
 
-Enter the tools:
+:data-x: r-400
+:data-y: r600
+:data-z: 1200
+
+--------
+
+:data-x: r1000
+:data-y: r0
+:data-z: 1200
+
+.. note::
+
+  not only is it shorter, but it tests more!
+
+  and all the fixtures are tested
+
+--------
+
+:id: test6
+:data-x: r600
+:data-y: r-400
+:data-z: 0
+
+.. include:: code/tests/test_sample6.py
+  :code: python
+  :start-line: 1
+
+--------
+
+:id: highlight-1
+:data-x: r0
+:data-y: r0
+:class: highlight
+  
+.. note:: stop time, log capture, directory
+
+.. note:: mention cleanups as another way, 3.1+ though!
+
+--------
+
+:id: highlight-2
+:class: highlight
+
+.. note:: finally test how long it took, should do on all tests?
+
+--------
+
+:id: highlight-3
+:class: highlight
+:data-x: r0
+:data-y: r800
+
+.. note:: check error logging
+
+.. note:: 7 minutes
+
+--------
+
+:class: slide
+:data-x: r1600
+:data-y: r0
+
+Standard Library vs Other Libraries
+===================================
+
+Standard Library
+----------------
+
+- unittest
+
+Other Libraries
+----------------
 
 - testfixtures
-
 - mock
+- unittest2
 
-- manuel
+.. note::
 
+  - freedom from python version, consistent tools
+  - mock/unittest2 merged in
+  
 ----------------
 
-Here's how we can use them to make our tests simpler:
-
-- tempdir
-- logcapture
-- replacer
-- time
-
-----------------
+:class: slide
  
-compare
-========
-
-- prefix to compare!
-- put expected first: looks weird but makes sense    
-- sets
-- dicts
-- lists and tuples
-- generators (generator helper)
-- long strings
-- string comparison objects
-- registering your own
-- comparison objects
-
-
-contrast with python std lib versions
-
-.. container:: box w600
- 
-  If you're using a version of Python where the ``with`` keyword is
-  available, a TempDirectory can be used as a
-  context manager:
+Comparing things
+================
 
 .. code :: python
 
-  >>> from testfixtures import TempDirectory
-  >>> with TempDirectory() as d:
-  ...   d.write('test.txt', b'some foo thing')
-  ...   foo2bar(d.path, 'test.txt')
-  ...   d.read('test.txt')
-  '...'
-  b'some bar thing'
+   class MyTests(TestCase):
 
----------------------
+       def test_something(self):
+           self.assertEqual(..., ...)
 
-output capture
-==============
+- Has got much better with successive Python versions
+- Not much help if you're stuck on 2.6/2.7
 
--------------------
+.. note:: still not quite there
 
-testing exceptions
-==================
+  * rich comparision
+  * register your own comparison function
 
-- ShouldRaise
-- any exception
-- type of exception
-- specific exception (best!)
-- think about testing str(ex) to make sure it makes sense
-- what's in stdlib now?
+------------------------
 
-with self.assertRaises(SomeException) as cm:
-    do_something()
+:class: slide
+ 
+Rich comparison
+===============
 
-the_exception = cm.exception
-self.assertEqual(the_exception.error_code, 3)
+.. code :: python
+
+  >>> from testfixtures import compare
+
+.. code :: python
+
+  >>> compare(1, 2)
+  Traceback (most recent call last):
+   ...
+  AssertionError: 1 != 2
+
+.. code :: python
+
+  >>> compare("1234567891011", "1234567789")
+  Traceback (most recent call last):
+  ...
+  AssertionError: 
+  '1234567891011'
+  !=
+  '1234567789'
+
+------------------------
+
+:class: slide
+ 
+Rich comparison: long strings
+=============================
+
+.. code :: python
+
+  >>> from testfixtures import compare
+  >>> compare("""
+  ...         This is line 1
+  ...         This is line 2
+  ...         This is line 3
+  ...         """,
+  ...         """
+  ...         This is line 1
+  ...         This is another line
+  ...         This is line 3
+  ...         """)
+  Traceback (most recent call last):
+   ...
+  AssertionError: 
+  @@ -1,5 +1,5 @@
+  
+           This is line 1
+  -        This is line 2
+  +        This is another line
+           This is line 3
+
+.. note:: whitespace/line endings options: see docs!
+
+------------------------
+
+:class: slide
+ 
+Rich comparison: sets
+=============================
+
+.. code :: python
+
+  >>> from testfixtures import compare
+  >>> compare(set([1, 2]), set([2, 3]))
+  Traceback (most recent call last):
+   ...
+  AssertionError: set not as expected:
+  
+  in first but not second:
+  [1]
+  
+  in second but not first:
+  [3]
+  
+------------------------
+
+:class: slide
+ 
+Rich comparison: dicts
+=================================
+
+.. code :: python
+
+  >>> from testfixtures import compare
+  >>> compare(dict(x=1, y=2, a=4), dict(x=1, z=3, a=5))
+  Traceback (most recent call last):
+   ...
+  AssertionError: dict not as expected:
+  
+  same:
+  ['x']
+  
+  in first but not second:
+  'y': 2
+  
+  in second but not first:
+  'z': 3
+  
+  values differ:
+  'a': 4 != 5
+
+------------------------
+
+:class: slide
+ 
+Rich comparison: sequences
+=================================
+
+- lists
+- tuples
+
+.. code :: python
+
+  >>> from testfixtures import compare
+  >>> compare([1, 2, 3], [1, 2, 4])
+  Traceback (most recent call last):
+   ...
+  AssertionError: Sequence not as expected:
+  
+  same:
+  [1, 2]
+  
+  first:
+  [3]
+  
+  second:
+  [4]
+
+-----------------
+
+:class: slide
+ 
+Comparison Helpers
+=====================================
+
+- not all objects support comparison
+- nor should they
+- even just to make things testable
+
+.. container:: sp200
+
+  - some do, whether you like it or not!
+
+.. code-block:: python
+
+        class SomeModel:
+            def __eq__(self, other):
+                if isinstance(other, SomeModel):
+                    return True
+                return False
+
+.. note:: 
+
+  talk through putting helper first, gets first bite of cherry
+
+  expected -> actual
+
+-----------------
+
+:class: slide
+ 
+Rich comparison: generators/iterators
+=====================================
+
+.. code :: python
+
+  >>> def my_gen(t):
+  ...     i = 0
+  ...     while i<t:
+  ...         i += 1
+  ...         yield i
+
+- be careful of just comparing by id
+- be careful when unwinding
+
+.. note:: 
+
+  if you unwind to tuple, was it important that it was a generator
+
+.. code :: python
+
+  >>> from testfixtures import generator
+  >>> compare(generator(1, 2, 3), my_gen(2))
+  Traceback (most recent call last):
+   ...
+  AssertionError: Sequence not as expected:
+
+  same:
+  (1, 2)
+
+  first:
+  (3,)
+
+  second:
+  ()
+
+.. note:: 
+
+  talk through generator helper
 
 -----------------------
 
-files and directories
-=====================
-
-- computing paths
-- writing files (encoding)
-- reading files (encoding)
-- listing directories
-
-----------------------
-
-logging
-========
-
-seperates log entry generation from log entry recording
-- inspecting for tracebacks (diff between error, exception and exc_info=true_
-- filtering by level
-- filtering by logger
-- checking handler configuration
-
---------------------
-
-mocking
-=======
-
-- replacers
-- replace where used, contrast with Mock (ie: same)
-- things that may not be there
-- dict keys
-- elements in lists
-- removing things (dict values (eg: env), attributes)
-
-contrast with mock.patch
-
----------------------
-
-dates and times
-===============
-
-- mocks
-- non - monotonic
-- set values / add values
-- set delta / delta type
-- now / utcnow
-
-----------------------
-
-the call pattern mock
-=====================
-
-- mock out a set of methods
-- check they're called in order with expected params
-- side effects
-- changes is API
-
-- at end give smart-arse test of file:// url
-- however, can't simulate 401, etc
-- work example, change from path to url
-
--------------------
-
-pitfalls
-========
-
-symetric testings (proves nothing)
-over mocking (misses interface)
-
------------------
-
-manuel
-======
-
-- different parsers
-- testfixtures plugin
-- testing documentation
-
------------------
-
-modes of operation 
-==================
-
-(TempDirectory, Replacers, LogCapture)
-
-- decorator
-- context manager
-- manual
+:class: slide
  
-----------------
+Unfriendly strings
+=====================================
+
+- process ids
+- thread ids
+
+.. code-block:: python
+
+  from testfixtures import compare, StringComparison as S
+
+  compare(S('Starting thread \d+'),'Starting thread 132356')
+
+- USE SPARINGLY!
+
+-----------------------
+
+:id: comparisons
+
+.. container:: box
+
+  .. class:: header
+
+    Objects that don't support comparison
+
+
+  .. code-block:: python
+
+    class SomeClass:
+       def __init__(self, x, y):
+           self.x, self.y = x, y
+
+.. code-block:: python
+  :class: sp100
+  
+  >>> from testfixtures import Comparison as C
+
+.. code-block:: python
+ 
+  >>> C('modue.SomeClass') == SomeClass(1, 2)
+  True
+
+.. code-block:: python
+
+  >>> C(SomeClass) == SomeClass(1, 2)
+  True
+
+.. code-block:: python
+
+  >>> C(SomeClass, x=1, y=2) == SomeClass(1, 2)
+  True
+
+
+.. container:: box sp100
+
+  useful post-comparison representation:
+
+  .. code-block:: python
+  
+    >>> compare(C(SomeClass, x=2), SomeClass(1, 2))
+    Traceback (most recent call last):
+     ...
+    AssertionError: 
+      <C(failed):...SomeClass>
+      x:2 != 1
+      y:2 not in Comparison
+      </C> != <...SomeClass...>
+
+.. class:: box sp100
+
+  You don't have to compare all attributes:
+
+.. code-block:: python
+  
+  >>> C(SomeClass, x=1, strict=False) == SomeClass(1, 2)
+  True
+
+.. note:: comparisons can also be nested
+
+-----------------------
+
+:data-y: r440
+:data-x: r0
+
+-----------------------
+
+:data-y: r220
+:data-x: r0
+
+------------------
+
+:data-x: r1600
+:data-y: r-660
+
+:class: slide
+
+Registering your own comparers
+==============================
+
+.. code-block:: python
+
+ DataRow = namedtuple('DataRow', ('x', 'y', 'z'))
+
+.. code-block:: python
+
+  >>> from testfixtures.comparison import register, compare_sequence
+  >>> register(DataRow, compare_sequence)
+  >>> compare(DataRow(1, 2, 3), DataRow(1, 2, 4))
+  Traceback (most recent call last):
+   ...
+  AssertionError: Sequence not as expected:
+
+  same:
+  (1, 2)
+
+  first:
+  (3,)
+
+  second:
+  (4,)
+
+Standard library has better support in 3.1+:
+
+.. include:: code/tests/test_stdlib_compare.py
+  :code: python
+  :start-line: 7
+
+------------------
 
 :data-x: r1600
 :data-y: r0
+:class: slide
+
+Strict comparison
+==============================
+
+- comparison is relaxed and useful by default:
+
+.. container:: box
+
+  ::
+
+    >>> TypeA = namedtuple('A', 'x')
+    >>> TypeB = namedtuple('B', 'x')
+    >>> compare(TypeA(1), TypeB(1))
+    <identity>
+
+- not always what you want, so you can be strict
+
+.. container:: box
+
+  ::
+
+    >>> compare(TypeA(1), TypeB(1), strict=True)
+    Traceback (most recent call last):
+     ...
+    AssertionError: 
+    A(x=1) (<class '__main__.A'>)!= B(x=1) (<class '__main__.B'>)
+
+-----------------
+
+:class: slide
+
+What about some context?
+========================
+
+- all this rich comparison is great
+- no contextual information provided
+
+.. code-block:: python
+
+  >>> compare(1, 2, prefix='wrong number of orders')
+  Traceback (most recent call last):
+   ...
+  AssertionError: wrong number of orders: 1 != 2
+
+- works with all previous examples
+
+.. note:: 13 minutes
+
+---------------------
+
+:class: slide
+
+Things that print
+=================
+
+- Lots of code writes to stdout/stderr
+
+.. code-block:: python
+
+  def myfunction()
+      # code under test
+      print("Hello!")
+      print("Something bad happened!", file=sys.stderr)
+
+- We should test that:
+
+.. code-block:: python
+
+  from testfixtures import OutputCapture
+  with OutputCapture() as output:
+      myfunction()
+
+  output.compare('''
+  Hello!
+  Something bad happened!
+  ''')
+
+- Whitespace is stripped before comparison
+
+.. code-block:: python
+
+  output.captured
+
+.. note:: also a way to clear up poor code under test
+
+-------------------
+
+:class: slide
+
+Exceptions
+==================
+
+.. code-block:: python
+
+  from testfixtures import ShouldRaise
+
+.. code-block:: python
+
+  with ShouldRaise():
+      ...
+
+.. code-block:: python
+
+  with ShouldRaise(ValueError):
+      ...
+
+.. code-block:: python
+
+  with ShouldRaise(ValueError('Something went wrong!')) as s:
+      ...
+  compare(str(s.raised), 'Something went wrong!')
+  
+Standard library provides some of this in 3.1+:
+
+.. code-block:: python
+
+   with self.assertRaises(SomeException) as cm:
+      ...
+
+   the_exception = cm.exception
+   self.assertEqual(the_exception.error_code, 3)
+
+-----------------------
+
+:class: slide
+
+Files and Directories
+=====================
+
+- annoying to set up
+- have to remember to clean up
+- difficult to make cross-platform
+
+.. code-block:: python
+
+  from testfixtures import TempDirectory
+
+  class MyTests(TestCase):
+
+      def setUp(self):
+          self.dir = TempDirectory()
+
+      def tearDown(self):
+          self.dir.cleanup()
+
+.. note:: 
+
+  tempted to release this just for working with filesystems
+  outside tests!
+
+-----------------------
+
+:class: slide
+
+Writing files
+=====================
+
+- gives you back the path written:
+
+.. code-block:: python
+
+  with TempDirectory as dir:
+      path = dir.write('foo.txt', b'bar')
+
+- can do the encoding for you:
+ 
+.. code-block:: python
+
+  with TempDirectory as dir:
+      path = dir.write('foo.txt', 'bar', 'utf8')
+ 
+- can take sequences of path segments:
+ 
+.. code-block:: python
+
+  with TempDirectory as dir:
+      path = dir.write(('root', gethostname(), 'foo.txt'), 'bar')
+ 
+- takes slash separated path, on all operating systems:
+ 
+.. code-block:: python
+
+  with TempDirectory as dir:
+      path = dir.write('my_folder/foo.txt', 'bar')
+ 
+-----------------------
+
+:class: slide
+
+Okay, but it's my code that's writing!
+======================================
+
+- get a path that doesn't yet exist:
+
+.. code-block:: python
+
+  with TempDirectory as dir:
+      path = dir.getpath('foo.txt')      
+ 
+- can take some familiar options:
+  
+.. code-block:: python
+
+  with TempDirectory as dir:
+      path = dir.getpath(('root', gethostname(), 'foo.txt'))
+ 
+.. code-block:: python
+
+  with TempDirectory as dir:
+      path = dir.getpath('my_folder/foo.txt')
+
+-----------------------
+
+:class: slide
+
+Reading files
+=============
+
+- gives you bytes by default:
+
+.. code-block:: python
+
+  with TempDirectory as dir:
+      ...
+      compare(b'expected', dir.read('foo.txt'))
+
+- but can decode if you want:
+ 
+.. code-block:: python
+
+  with TempDirectory as dir:
+      ...
+      compare('expected', dir.read('foo.txt', 'utf8'))
+ 
+- the usual suspects:
+ 
+.. code-block:: python
+
+  with TempDirectory as dir:
+      actual = dir.read(('root', gethostname(), 'foo.txt'))
+ 
+.. code-block:: python
+
+  with TempDirectory as dir:
+      actual = dir.read('my_folder/foo.txt')
+
+---------------------
+
+:class: slide
+
+Directories
+===========
+
+- easy to create, including intermediate directories:
+
+.. code-block:: python
+
+  with TempDirectory as dir:
+      dir_path = dir.makedir('root/userfolder')
+
+.. code-block:: python
+
+  with TempDirectory as dir:
+      dir_path = dir.makedir(('root', gethostname()))
+ 
+- check contents of a particular directory:
+
+.. code-block:: python
+
+  with TempDirectory as dir:
+      ...
+      dir.check_dir('root/userfolder',
+                    'user1.txt', 'user2.txt')
+ 
+---------------------
+
+:class: slide
+
+Directories
+===========
+
+- can recursively check the contents of the whole temporary directory:
+
+.. code-block:: python
+
+  with TempDirectory as dir:
+      ...
+      dir.check_all('',
+                    'root/',
+                    'root/userfolder/',
+                    'root/userfolder/user1.txt',
+                    'root/userfolder/user2.txt')
+
+
+- stable, ordered and cross platform
+
+- can be configured to ignore certain name patterns
+
+.. note: like all testfixtures stuff, no surprises, all sorted/ordered
+
+.. note: options to ignore certain folders, see docs
+
+----------------------
+
+:class: slide
+
+Logging
+========
+
+.. class:: mg20
+
+  Python has a great standard logging framework:
+
+- separates log generation from log recording
+- provides a good interface for libraries
+- has gotten much easier to configure handlers
+- rarely tested!
+
+--------------------------
+
+.. code-block:: python
+
+  from logging import getLogger
+  logger = getLogger()
+
+  def process(block):
+      logger.info('start of block number %i', block)
+      try:
+          raise RuntimeError('No code to run!')
+      except:
+          logger.error('error occurred', exc_info=True)
+
+----------------------
+
+:id: log1
+:class: pop
+:data-x: r0
+:data-y: r400
+:data-z: 400
+
+.. code-block:: python
+ 
+  from testfixtures import LogCapture
+
+  with LogCapture() as log:
+      process(1)
+
+  log.check(
+      ('root', 'INFO', 'start of block number 1'),
+      ('root', 'ERROR', 'error occurred'),
+  )
+
+----------------------
+
+:id: log2
+:class: pop
+:data-y: r0
+:data-x: r0
+
+.. code-block:: python
+ 
+  from testfixtures import (
+      Comparison as C, LogCapture, compare
+      )
+
+  with LogCapture() as log:
+      process(1)
+
+  compare(C(RuntimeError('No code to run!')), 
+          log.records[-1].exc_info[1])
+
+------------------------
+
+:data-x: r1600
+:data-z: 0
+:class: slide
+
+Only capturing certain logging
+==============================
+
+- capture above a certain level
+
+.. code-block:: python
+
+  with LogCapture(level=logging.INFO) as log:
+      logger= getLogger()
+      logger.debug('junk')
+      logger.info('what we care about')
+
+  log.check(('root', 'INFO', 'what we care about'))
+
+- capture a particular logger
+
+.. code-block:: python
+
+  with LogCapture('specific') as log:
+      getLogger('something').info('junk')
+      getLogger('specific').info('what we care about')
+      getLogger().info('more junk')
+
+  log.check(('specific', 'INFO', 'what we care about'))
+
+------------------------
+
+:class: slide
+
+Only capturing certain logging
+==============================
+
+- capture during a particular piece of code
+
+.. code-block:: python
+
+  class JobTests(TestCase):
+  
+      def setUp(self):
+          self.log = LogCapture(install=False)
+          log.job = MyJob()
+          self.log.install()
+
+      def tearDown(self):
+          self.log.uninstall()
+
+      def test_1(self):
+          ...
+
+      def test_2(self):
+          ...
+
+      def test_2(self):
+          self.log.uninstall()
+          self.job.prepare()
+          self.log.install()
+          self.job.run()
+          self.log.check(...)
+
+.. note:: 
+
+  could use two logcaptures?
+
+  debug means no silly default handler setup
+
+----------------------
+
+:class: slide
+
+Testing handler configuration
+=============================
+
+.. code-block:: python
+
+   class LoggingConfigurationTests(TestCase):
+
+       def setUp(self):
+            self.logger = logging.getLogger()
+            self.orig_handlers = self.logger.handlers
+            self.logger.handlers = []
+            self.level = self.logger.level
+
+        def tearDown(self):
+            self.logger.handlers = self.orig_handlers
+            self.logger.level = self.level
+        
+        def test_basic_configuration(self):
+            # do configuration
+            logging.basicConfig(format='%(levelname)s %(message)s',
+                                level=logging.INFO)
+            # check results of configuration
+            compare(self.logger.level, 20)
+            compare([
+                C('logging.StreamHandler',
+                  stream=sys.stderr,
+                  formatter=C('logging.Formatter',
+                              _fmt='%(levelname)s %(message)s',
+                              strict=False),
+                  level=logging.NOTSET,
+                  strict=False)
+                ], self.logger.handlers)
+
+--------
+
+:id: highlight-4
+:data-x: r0
+:data-y: r0
+:class: highlight
+  
+.. note::
+
+        # We mock out the handlers list for the logger we're
+        # configuring in such a way that we have no handlers
+        # configured at the start of the test and the handlers our
+        # configuration installs are removed at the end of the test.
+
+--------
+
+:id: highlight-5
+:data-x: r0
+:data-y: r0
+:class: highlight
+  
+.. note:: check level is set correctly
+
+--------
+
+:id: highlight-6
+:data-x: r0
+:data-y: r0
+:class: highlight
+  
+.. note::
+
+           # Now we check the configuration is as expected:
+
+.. note:: 19 minutes
+
+--------------------
+
+:class: slide
+:data-x: r1600
+:data-y: r0
+
+Mocking
+=======
+
+- complex functionality with a defined API
+- simple mock that matches that API
+- often make assertions about calls
+- sometimes need side effects / behaviour
+
+--------------------
+
+:class: slide
+
+Where do you mock?
+==================
+
+One place:
+
+.. code-block:: python
+
+  import datetime as dt
+
+  def my_code():
+      if dt.datetime.now() > dt.datetime(2013, 3, 23, 14, 30):
+          say_i_do()
+
+
+.. class:: sp100
+
+  Lots of places:
+
+.. code-block:: python
+
+  from datetime import datetime
+
+  def my_code():
+      if datetime.now() > datetime(2013, 3, 23, 14, 30):
+          say_i_do()
+
+--------------------
+
+:class: slide
+
+How do you mock?
+================
+
+Patch decorator from mock
+----------------------------------------
+
+.. code-block:: python
+
+  >>> @patch('package.module.Class')
+  ... def test(MockClass):
+  ...     instance = MockClass.return_value
+  ...     instance.method.return_value = 'foo'
+  ...     from package.module import Class
+  ...     assert Class() is instance
+  ...     assert Class().method() == 'foo'
+
+- returns a `Mock` instance for you
+- can only mock one thing per instance
+
+.. note:: don't use asserts! (crap error messages)
+
+--------------------
+
+:class: slide
+
+How do you mock?
+================
+
+`Replacer` from `testfixtures`
+------------------------------
+
+.. code-block:: python
+
+  def test_function():
+      with Replacer() as r:
+          mock_method = Mock()
+          mock_class = Mock()
+          r.replace('module.AClass.method', mock_method)
+          r.replace('module.BClass', mock_class)
+          from module import BClass
+          x = AClass()
+          y = BClass()
+          self.assertTrue(x.method() is mock_method.return_value)
+          self.assertTrue(y is mock_class.return_value)
+
+- you can insert any object of your choice
+- it's simple to mock multiple things
+
+.. note:: 
+
+  can also be used manually and as a decorator
+
+---------------------
+
+:class: slide
+ 
+Mocking other things
+====================
+
+.. code-block:: python
+
+  someDict = dict(
+      x='value',
+      y=[1, 2, 3],
+      )
+
+- dict keys
+
+.. code-block:: python
+
+  with Replacer() as r:
+      r.replace('module.someDict.x', 'foo')
+      pprint(someDict)
+
+  {'x': 'foo', 'y': [1, 2, 3]}
+
+- elements in lists
+
+.. code-block:: python
+
+  with Replacer() as r:
+      r.replace('module.someDict.y.1', 42)
+      pprint(someDict)
+
+  {'x': 'value', 'y': [1, 42, 3]}
+
+---------------------
+
+:class: slide
+ 
+Removing things
+====================
+
+- attributes
+
+.. code-block:: python
+
+  from testfixtures import Replacer, not_there
+
+  with Replacer() as r:
+      r.replace('module.someDict.x', not_there)
+      print(hasattr(module, 'someDict')
+
+  False
+
+- keys in dictionaries
+
+.. code-block:: python
+
+  from testfixtures import Replacer, not_there
+
+  with Replacer() as r:
+      r.replace('module.someDict.y', not_there)
+      pprint(someDict)
+
+  {'x': 'value'}
+
+---------------------
+
+:class: slide
+ 
+Things that might be there
+==========================
+
+.. code-block:: python
+
+  try:
+      from guppy import hpy
+      guppy = True
+  except ImportError:
+      guppy = False
+
+  def dump(path):
+      if guppy:
+          hpy().heap().stat.dump(path)
+
+.. code-block:: python
+
+    from mock import Mock, call
+    from testfixtures import replace
+
+    class Tests(unittest.TestCase):
+
+        @replace('module.guppy',True)
+        @replace('module.hpy', Mock(), strict=False)
+        def test_method(self, hpy):
+
+            dump('somepath')
+
+            compare([
+                     call(), 
+                     call().heap(), 
+                     call().heap().stat.dump('somepath')
+                    ], hpy.mock_calls)
+
+-----------------------
+
+:class: slide
+
+What mock to use?
+=================
+
+- Michael Foord's mock library
+- soon to be in standard library
+- worthy of a talk of its own
+- what about dates and times?
+
+---------------------
+
+:class: slide
+
+datetimes
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_datetime
+
+- simple, variable gap times by default:
+
+.. code-block:: python
+
+  datetime = test_datetime()
+  print(datetime.now())
+  print(datetime.now())
+  print(datetime.now())
+
+  2001-01-01 00:00:00
+  2001-01-01 00:00:10
+  2001-01-01 00:00:30
+
+---------------------
+
+:class: slide
+
+datetimes
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_datetime
+
+- can be specifically configured:
+
+.. code-block:: python
+
+  datetime = test_datetime(None)
+  datetime.add(1978, 6, 13, 16, 0, 1)
+  datetime.add(2013, 3, 23, 14, 30)
+  print(datetime.now())
+  print(datetime.now())
+
+  1978-06-13 16:00:01
+  2013-03-23 14:30:00
+
+.. note:: remember to talk about .set()!
+
+---------------------
+
+:class: slide
+
+datetimes
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_datetime
+
+- can also just have deltas configured:
+
+.. code-block:: python
+
+  datetime = test_datetime(delta=2, delta_type='hours')
+  print(datetime.now())
+  print(datetime.now())
+
+  2001-01-01 00:00:00
+  2001-01-01 02:00:00
+
+- good support for time zones.
+
+---------------------
+
+:class: slide
+
+dates
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_date
+
+- Non-sequential dates by default:
+
+.. code-block:: python
+
+  date = test_date(2013, 3, 23)
+  print(date.today())
+  print(date.today())
+  print(date.today())
+
+  2013-03-23
+  2013-03-24
+  2013-03-26
+
+---------------------
+
+:class: slide
+
+dates
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_date
+
+- specific dates can be configured:
+
+.. code-block:: python
+
+  date = test_date(None)
+  date.add(1978, 6, 13)
+  date.add(2013, 3, 23)
+  print(date.today())
+  print(date.today())
+
+  1978-06-13
+  2013-03-23
+
+---------------------
+
+:class: slide
+
+dates
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_date
+
+- deltas can be configured for dates too:
+
+.. code-block:: python
+
+  date = test_date(delta=2, delta_type='days')
+  print(date.today())
+  print(date.today())
+
+  2001-01-01
+  2001-01-03
+
+---------------------
+
+:class: slide
+
+times
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_time
+
+- sequential times with increasing gaps:
+
+.. code-block:: python
+
+  time = test_time()
+  print(time())
+  print(time())
+  print(time())
+
+  978307200.0
+  978307201.0
+  978307203.0
+
+---------------------
+
+:class: slide
+
+times
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_time
+
+- specific times can be configured:
+
+.. code-block:: python
+
+  time = test_time(None)
+  time.add(1978, 6, 13, 16, 1)
+  time.add(2013, 3, 23, 14, 30)
+  print(time())
+  print(time())
+
+  266601660.0
+  1364049000.0
+
+---------------------
+
+:class: slide
+
+times
+===============
+
+.. code-block:: python
+
+  from testfixtures import test_time
+
+- sub-second deltas are supported:
+
+.. code-block:: python
+
+  time = test_time(delta=0.5, delta_type='seconds')
+  print(time())
+  print(time())
+
+  978307200.0
+  978307200.5
+
+-------------------
+
+:class: slide
+
+Common pitfalls
+===============
+
+Symmetric testing
+-----------------
+
+- proves nothing
+
+Excessive mocking
+-----------------
+
+- misses interface changes
+- doesn't match real behaviour
+
+-----------------
+
+:class: slide
+
+Modes of operation 
+==================
+
+TempDirectory, Replacer and LogCapture can all be used:
+
+- as a decorator
+- as a context manager
+- manual, as we have in these examples
+ 
+----------------
+
 :class: slide
 :id: questions
 
@@ -401,12 +1693,8 @@ Chris Withers
 .. note:: 
 
    testfixtures and mock are available separately, py25 - py33
+
+   READ THE DOCS - context managers, decorators, etc
+
    newer unittest features only really fully there in py33
    unittest2 may bring a lot of it?
-
----------
-
-:id: test-highlight
-:class: highlight
-
-
