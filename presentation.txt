@@ -334,7 +334,7 @@ Comparing things
 
 .. note:: still not quite there
 
-  * rich comparision
+  * rich comparison
   * register your own comparison function
 
 ------------------------
