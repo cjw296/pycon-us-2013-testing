@@ -43,17 +43,57 @@ Something to test
 
 --------
 
-.. include:: code/sample1.py
-  :code: python
+:class: pop
+:id: sample1
 
-.. include:: code/tests/test_sample1.py
+.. include:: code/sample1.py
   :code: python
 
 .. note:: here's the spec for the function
 
+-----------
+
+:class: pop
+:id: test1
+:data-x: r0
+:data-y: r0
+:data-transition-duration: 0
+
+.. include:: code/tests/test_sample1.py
+  :code: python
+
+-----------
+
+:class: pop
+:id: test2
+:data-x: r1600
+:data-y: r0
+:data-transition-duration: 0
+
+.. include:: code/tests/test_sample2.py
+  :code: python
+
 --------
 
+:class: pop
+:id: sample2
+:data-x: r0
+:data-y: r0
+
 .. include:: code/sample2.py
+  :code: python
+
+.. note:: 
+
+  obvious problem!
+  ...so lets round outwith some more tests
+
+--------
+
+:data-x: r1600
+:data-y: r0
+
+.. include:: code/tests/test_sample3.py
   :code: python
 
 .. note:: 
@@ -66,69 +106,53 @@ Something to test
 
   Test doesn't work on Windows (re-open tempfile!)
 
---------
+  what if we had to process a dir of files to get the answer?
 
-.. container:: box w600
+-----------
 
-  This is just some text in a slide.
+.. include:: code/sample3.py
+  :code: python
 
-  Here's another paragraph on a slide
+.. note::
 
-  - bullet
-  - list
-
-.. note:: 
-
-  Just using NamedTemporaryFile leaves you with:
-
-  ValueError: I/O operation on closed file.
-
--------------------
-
-      # unicode in 'name' column
-      # invalid ints
-      # negative numbers?
-
-what if they're all zero?
-
-
-Hello 2
+   here's the code
 
 --------
 
+Have we tested the logging?
 
-.. code:: python
-
-  def top_vol(path):
-      # read csv
-      # log how long it took
-      # timeout from url?
-      # return most expensive / highest volume
-      # unicode in 'name' column
-      # invalid ints
-      # negative numbers?
-      pass
-
+What do the exceptions look like?
 
 ----------------------
 
-.. code:: python
+  copy and paste -> abstract -> tools
 
-  def top_earner(path):
-      # read csv
-      # log how long it took
-      # timeout from url?
-      # return most expensive / highest volume
-      # unicode in 'name' column
-      # invalid ints
-      # negative numbers?
-      pass
+  ...but then need to test those
+
+------------------
+
+Enter the tools:
+
+- testfixtures
+
+- mock
+
+- manuel
+
+----------------
+
+Here's how we can use them to make our tests simpler:
+
+- tempdir
+- logcapture
+- replacer
+- time
 
 ----------------
  
-Overview
-
 compare
+========
+
 - prefix to compare!
 - put expected first: looks weird but makes sense    
 - sets
@@ -140,10 +164,40 @@ compare
 - registering your own
 - comparison objects
 
+
+contrast with python std lib versions
+
+.. container:: box w600
+ 
+  If you're using a version of Python where the ``with`` keyword is
+  available, a TempDirectory can be used as a
+  context manager:
+
+.. code :: python
+
+  >>> from testfixtures import TempDirectory
+  >>> with TempDirectory() as d:
+  ...   d.write('test.txt', b'some foo thing')
+  ...   foo2bar(d.path, 'test.txt')
+  ...   d.read('test.txt')
+  '...'
+  b'some bar thing'
+
+---------------------
+
 output capture
+==============
+
+-------------------
 
 testing exceptions
+==================
+
 - ShouldRaise
+- any exception
+- type of exception
+- specific exception (best!)
+- think about testing str(ex) to make sure it makes sense
 - what's in stdlib now?
 
 with self.assertRaises(SomeException) as cm:
@@ -152,20 +206,32 @@ with self.assertRaises(SomeException) as cm:
 the_exception = cm.exception
 self.assertEqual(the_exception.error_code, 3)
 
+-----------------------
+
 files and directories
+=====================
+
 - computing paths
 - writing files (encoding)
 - reading files (encoding)
 - listing directories
 
+----------------------
+
 logging
+========
+
 seperates log entry generation from log entry recording
 - inspecting for tracebacks (diff between error, exception and exc_info=true_
 - filtering by level
 - filtering by logger
 - checking handler configuration
 
+--------------------
+
 mocking
+=======
+
 - replacers
 - replace where used, contrast with Mock (ie: same)
 - things that may not be there
@@ -173,39 +239,102 @@ mocking
 - elements in lists
 - removing things (dict values (eg: env), attributes)
 
-the call pattern mock
-- mock out a set of methods
-- check they're called in order with expected params
-- side effects
-- changes is API
+contrast with mock.patch
+
+---------------------
 
 dates and times
+===============
+
 - mocks
 - non - monotonic
 - set values / add values
 - set delta / delta type
 - now / utcnow
 
+----------------------
+
+the call pattern mock
+=====================
+
+- mock out a set of methods
+- check they're called in order with expected params
+- side effects
+- changes is API
+
+- at end give smart-arse test of file:// url
+- however, can't simulate 401, etc
+- work example, change from path to url
+
+-------------------
+
+pitfalls
+========
+
+symetric testings (proves nothing)
+over mocking (misses interface)
+
+-----------------
+
 manuel
+======
+
 - different parsers
 - testfixtures plugin
 - testing documentation
 
-modes of operation (TempDirectory, Replacers, LogCapture)
+-----------------
+
+modes of operation 
+==================
+
+(TempDirectory, Replacers, LogCapture)
+
 - decorator
 - context manager
 - manual
  
+----------------
+
+:data-x: r1600
+:data-y: r0
+:class: slide
+:id: questions
+
+Questions
+=========
+
+?
+
 ----------
 
-Summary
+:id: links
+:class: slide
+
+Links
 =======
 
 testfixtures
-  http://www.blah.com
+------------
+
+* https://pypi.python.org/pypi/testfixtures
+* search for "testfixtures python"
 
 mock
-  http://www.blah.com
+----
+
+* http://docs.python.org/dev/library/unittest.mock
+* search for "python mock"
 
 manuel
-  http://www.blah.com
+------
+
+* https://github.com/benji-york/manuel
+* search for "benji york manuel"
+
+---------
+
+:id: test-highlight
+:class: highlight
+
+

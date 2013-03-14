@@ -16,7 +16,7 @@ time, mark, audio, video {
     margin: 0;
     padding: 0;
     border: 0;
-    font-size: 25px;
+    font-size: 35px;
     font: inherit;
     vertical-align: baseline;
 }
@@ -32,6 +32,7 @@ body {
 ol, ul {
     list-style: disc;
     list-style-position: inside;
+    font-size: 35px;
 }
 blockquote, q {
     quotes: none;
@@ -75,14 +76,26 @@ div.step {
     text-align: center;
 }
 
-.step p, .step ul {
-margin-top: 10px;
-margin-bottom: 10px;
+.step h2 {
+    margin-top: 50px; 
+    margin-bottom: 10px; 
+    font-size: 45px;
+    font-weight: bold;
+}
+
+.step p, .step li {
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
 .step table {
     border: 1px solid black;
     margin: 0 auto;
+}
+
+.step a {
+    color: #628CCD;
+    text-decoration: none;
 }
 
 td, th {
@@ -114,11 +127,7 @@ div.slide {
 
 }
 
-/* code sample styling */
-
-div.present pre {
-    font-size: 120%;
-}
+/* visual classes */
 
 div pre.code, div .box {
     background-color: white;
@@ -128,12 +137,32 @@ div pre.code, div .box {
     font-size: 20px;
 }
 
+div.code {
+    white-space: pre;
+    font-family: monospace;
+    background-color: white;
+    border: 1px solid rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, .1);
+    font-size: 20px;
+    padding: 20px 20px;
+}
+
 div pre.code {
     padding: 20px 20px;
 }
 
 div .box {
     padding: 10px 20px;
+}
+
+div.highlight.present {
+    border: 5px solid red;
+    border-radius: 10px;
+}
+
+div.pop.present, div.pop.present pre.code {
+    font-size: 25px;
 }
 
 /* utilities */
@@ -164,4 +193,38 @@ p.block-quote {
 #title p {
     font-size: 40px;
     text-align: center;
+}
+
+#questions p {
+    font-size: 100px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 200px
+}
+
+/* highlights */
+
+div#sample1 {
+    position: relative;
+    top: -120px;
+}
+
+div#test1 {
+    position:relative;
+    top: 120px;
+}
+
+div#sample2 {
+    position: relative;
+    top: 250px;
+}
+
+div#test2 {
+    position:relative;
+    top: -150px;
+}
+
+#test-highlight {
+    width: 600px;
+    height: 200px;
 }

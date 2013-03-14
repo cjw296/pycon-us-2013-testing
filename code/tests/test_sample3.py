@@ -1,4 +1,3 @@
-import shutil
 import tempfile
 from code.sample2 import top_vol
 
@@ -6,12 +5,6 @@ from unittest import TestCase
 
 class Tests(TestCase):
 
-    def setUp(self):
-        self.dir = tempfile.mkdtemp()
-
-    def tearDown(self):
-        shutil.rmtree(self.dir)
-        
     def test_parse(self):
         with tempfile.NamedTemporaryFile() as source:
             source.write(b'''\
