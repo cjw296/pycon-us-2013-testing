@@ -162,7 +162,7 @@ div.highlight.present {
 }
 
 div.pop.present, div.pop.present pre.code {
-    font-size: 25px;
+    font-size: 23px;
 }
 
 /* utilities */
@@ -216,12 +216,21 @@ div#test1 {
 
 div#sample2 {
     position: relative;
-    top: 250px;
+    top: 200px;
 }
 
 div#test2 {
     position:relative;
     top: -150px;
+}
+
+div#sample3 {
+    position: relative;
+    left: 260px;
+}
+
+div#sample3 pre.code {
+    font-size: 15px;
 }
 
 #test-highlight {

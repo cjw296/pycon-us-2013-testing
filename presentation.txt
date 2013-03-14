@@ -61,6 +61,7 @@ Something to test
 
 .. include:: code/tests/test_sample1.py
   :code: python
+  :start-line: 1
 
 -----------
 
@@ -72,6 +73,7 @@ Something to test
 
 .. include:: code/tests/test_sample2.py
   :code: python
+  :start-line: 1
 
 --------
 
@@ -90,11 +92,35 @@ Something to test
 
 --------
 
+:class: pop
 :data-x: r1600
 :data-y: r0
 
 .. include:: code/tests/test_sample3.py
   :code: python
+  :start-line: 16
+  :end-line: 25
+
+--------
+
+:class: pop
+:data-x: r0
+:data-y: r300
+
+.. include:: code/tests/test_sample3.py
+  :code: python
+  :start-line: 26
+  :end-line: 35
+
+--------
+
+:class: pop
+:data-x: r0
+:data-y: r300
+
+.. include:: code/tests/test_sample3.py
+  :code: python
+  :start-line: 35
 
 .. note:: 
 
@@ -110,12 +136,52 @@ Something to test
 
 -----------
 
+:id: sample3
+:data-x: r450
+:data-y: r-300
+:data-z: 800
+
 .. include:: code/sample3.py
   :code: python
 
 .. note::
 
    here's the code
+
+   - what if we one saw zeros or negative numbers
+   - what about whitespace in headers?
+   - line coverage is only a start!
+
+--------
+
+:class: pop
+:data-x: r2000
+:data-y: r-150
+:data-z: 0
+
+.. include:: code/tests/test_sample4.py
+  :code: python
+  :start-line: 16
+  :end-line: 25
+
+--------
+
+:data-x: r1600
+:data-y: r0
+:data-z: r0
+
+.. include:: code/sample3.py
+  :code: python
+
+.. note::
+
+   here's the code
+
+   still bugs:
+
+   - what if we one saw zeros or negative numbers
+   - what about whitespace in headers?
+   - line coverage is only a start!
 
 --------
 
@@ -326,11 +392,17 @@ mock
 * http://docs.python.org/dev/library/unittest.mock
 * search for "python mock"
 
-manuel
-------
+Chris Withers
+-------------
 
-* https://github.com/benji-york/manuel
-* search for "benji york manuel"
+* chris@withers.org
+* @chriswithers13
+
+.. note:: 
+
+   testfixtures and mock are available separately, py25 - py33
+   newer unittest features only really fully there in py33
+   unittest2 may bring a lot of it?
 
 ---------
 
