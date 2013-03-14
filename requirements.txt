@@ -1,0 +1,9 @@
+Pygments==1.6
+distribute==0.6.31
+docutils==0.10
+-e git+git@github.com:regebro/hovercraft.git@72c59284bcd2e27175c5f587b8d65da1951ba065#egg=hovercraft-dev
+lxml==3.1.0
+manuel==1.7.1
+six==1.2.0
+svg.path==1.0b1
+-e git+git@github.com:Simplistix/testfixtures.git@8ffb8e787413b7b7ca3ecee0c5f7ada0f9a5003d#egg=testfixtures-dev
